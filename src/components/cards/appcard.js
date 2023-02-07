@@ -1,16 +1,28 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 
-const Appcard = () => {
-const green="";
-const red="";
+const AppCard = () => {
+  const [green, red, orange] = "";
   const [hotnm, sethotnm] = useState([]);
   useEffect(() => {
     fetch("http://localhost:5000/snap/shortsnap/3")
       .then((res) => res.json())
-      .then((response) => {sethotnm(response.data)}
-      );
-    
-
+      .then((response) => {
+        sethotnm(response.data);
+        for (let i in response.data) {
+          const cpu_util = response.data[i].cpu_util;
+          const mem_util = response.data[i].mem_util;
+          const ntp_status = response.data[i].ntp_status;
+          const root_vol = response.data[i].root_vol;
+          console.log(cpu_util, mem_util, ntp_status, root_vol);
+          if (cpu_util && mem_util && ntp_status && root_vol > 0.8) {
+            console.warn("ok");
+           
+          } else {
+            console.warn("not ok");
+            
+          }
+        }
+      });
   }, []);
 
   return (
@@ -21,7 +33,10 @@ const red="";
             <div className="card">
               <div className="card-body">
                 {hotnm.map((host) => (
-                  <div className="p-5 border" key={host.server_id}>cpu{host.cpu_util} util{host.mem_util}ntp {host.ntp_status}root {host.root_vol} ip{host.server_ip}  </div>
+                  <div className="p-5 border" key={host.server_id}>
+                    cpu{host.cpu_util} util{host.mem_util}ntp {host.ntp_status}
+                    root {host.root_vol} ip{host.server_ip}
+                  </div>
                 ))}
               </div>
             </div>
@@ -78,20 +93,6 @@ const red="";
                   <td>Otto</td>
                   <td>@mdo</td>
                 </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td colSpan="2">Larry the Bird</td>
-                  <td>@twitter</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                </tr>
               </tbody>
             </table>
           </div>
@@ -101,4 +102,4 @@ const red="";
   );
 };
 
-export default Appcard;
+export default AppCard;
