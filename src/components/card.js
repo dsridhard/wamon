@@ -1,20 +1,40 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 const Card = (props) => {
+  const id= 5
+  const [host, sethost] = useState([]);
+  const navigate = useNavigate()
+  const navHandler=()=>{
+    navigate(`/${props.appPath}`,{state:{id:id}})
+  }
+  useEffect(() => {
+    fetch(`http://10.64.29.214/snap/${props.appId}`)
+      .then((res) => res.json())
+      .then((response) => {
+        sethost(response.data);
+      });
+  }, []);
   return (
-    <div className="container-fluid">
-      <div className="row row-cols-2 row-cols-md-2 g-4 justify-content-center align-items-center ">
-        <div className="col">
-          <div className="card-body shadow-lg mt-3  p-2">
-            <div className="card-title">
-              <h3 className="text-center mt-4">{props.name}</h3>
+    <div className="d-inline-flex ">
+      {host.map((hostData) => (
+        <>
+          <div key={hostData.App_ID} className="text-center mt-3 ">
+            <div
+              className="mx-1 "
+              style={{
+                color: "white",
+                backgroundColor: hostData.colorCode,
+                borderRadius: 100,
+              }}
+            >
+              <p>u</p>
             </div>
-            <Link className="btn btn-primary" to={props.pathname}>
-              {props.pathname}
-            </Link>
           </div>
-        </div>
-      </div>
+        </>
+      ))}
+      <button className="btn btn-primary" onClick={navHandler}>
+        View
+      </button>
     </div>
   );
 };

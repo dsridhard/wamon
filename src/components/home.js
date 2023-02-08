@@ -1,36 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import Header from "./header";
+import Card from "./card";
+import Wave from "../components/logo.svg";
 const Home = () => {
   const [hotnm, sethotnm] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:5000/apps")
+    fetch("http://10.64.29.214/apps")
       .then((res) => res.json())
       .then((response) => {
         sethotnm(response.data);
       });
   }, []);
   return (
-    <div className="container-fluid">
-      <div className="row mt-4">
-        <div className="col-12 text-center ">
-          <h1>DashBoard</h1>
-        </div>
-      </div>
-      <div className="text-center mt-5 p-4">
-        {hotnm.map((appData) => (
-          <div className="">
-            <h1> {appData.App_Name} </h1>
-            <Link
-              className="btn btn-primary"
+    <div>
+      <Header />
+      <div className="container-fluid">
+        <div className="row mt-5 ">
+          {hotnm.map((appData) => (
+            <div
               key={appData.App_ID}
-              to={appData.App_Path}
+              className=" col  text-center mx-1 rounded-4   "
             >
-              View
-            </Link>
-          </div>
-        ))}
-        <Link to="/detailview">Detail</Link>
+              <div className="card mt-2 shadow-lg">
+                <div className="card-header">{appData.App_Name}</div>
+                <div className="card-body">
+                  <Card appPath={appData.App_Path} appId={appData.App_ID} />
+                </div>
+                {/* <div class="card-footer">
+                  <Link className="btn btn-primary my-1" to={appData.App_Path}>
+                    View
+                  </Link>
+                </div> */}
+              </div>
+            </div>
+          ))}
+
+          <img className="fixed-bottom" src={Wave} alt="svgwave"/>
+        </div>
       </div>
     </div>
   );
