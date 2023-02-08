@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import Header from "./header";
 import Card from "./card";
 import Wave from "../components/logo.svg";
@@ -25,13 +24,8 @@ const Home = () => {
               <div className="card mt-2 shadow-lg">
                 <div className="card-header">{appData.App_Name}</div>
                 <div className="card-body">
-                  <Card appPath={appData.App_Path} appId={appData.App_ID} />
+                  <Card  appPath={appData.App_Path} appId={appData.App_ID} />
                 </div>
-                {/* <div class="card-footer">
-                  <Link className="btn btn-primary my-1" to={appData.App_Path}>
-                    View
-                  </Link>
-                </div> */}
               </div>
             </div>
           ))}

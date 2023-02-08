@@ -5,8 +5,9 @@ const Card = (props) => {
   const [host, sethost] = useState([]);
   const navigate = useNavigate()
   const navHandler=()=>{
-    navigate(`/${props.appPath}`,{state:{id:id}})
+    navigate(`/${props.appPath}`,{state:{id:props.appId}})
   }
+
   useEffect(() => {
     fetch(`http://10.64.29.214/snap/${props.appId}`)
       .then((res) => res.json())

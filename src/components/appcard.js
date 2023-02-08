@@ -1,101 +1,46 @@
-import React, { useState, useEffect } from "react";
-import { Link, useLocation} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import Header from "./header";
-const AppCard = (props) => {
-  let btnnumber = 0;
-  const [showTable, setShowTable] = useState(false);
-  const [getData, setData] = useState();
+const Appcard = () => {
   const location = useLocation();
-  console.warn(location.state)
-
-  const [hotnm, sethotnm] = useState([]);
-  const buttonData = [
-   {id:1,name:"srv1"},
-   {id:2,name:"srv2"},
-   {id:3,name:"srv3"},
-   {id:4,name:"srv4"},
-   {id:5,name:"srv5"},
-   {id:6,name:"srv6"},
-   {id:7,name:"srv7"},
-
-  ]
-
-  function removeItem(name) {
-    btnnumber = name;
-    fetch("http://10.64.29.214/snap/shortsnap/" + name)
-      .then((res) => res.json())
-
-      .then((res) => {
-        setData(res.data);
+  const hostView = location.state.id;
+  console.warn(hostView);
+  const [item, setitem] = useState([]);
+  useEffect(() => {
+    fetch(`http://10.64.29.214/snap/${hostView}`)
+      .then((response) => response.json())
+      .then((resData) => {
+        console.warn(resData);
+        setitem(resData.data)
       });
-    setShowTable(true);
-  
-  }
- 
-
-  const handleClick = () => {
-    setShowTable(true);
-  };
-
+  }, []);
   return (
     <div>
       <Header />
-      <div className="container-fluid text-right mt-5">
-        <Link className="btn btn-info mx-4" to="/">
-          Home
-        </Link>
-        <button className="btn btn-primary" >
-       {location.state.id}
-        </button>
-      {buttonData.map((btnm)=>(
-               <button className="mx-3 btn btn-primary" key={btnm.id}   onClick={() => removeItem(btnm.id)} >{btnm.name}</button> 
-              ))}
-
-
-
-{showTable && (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>CPUINFO</th>
-              <th>cpu_util</th>
-              <th>mem_util</th>
-              <th>ntp_delay</th>
-              <th>ntp_status</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {getData.map(
-              (
-                item // Iterate over data and create table rows with data.map() method.
-              ) => (
-                <tr key={item.id}>
-                  <td>{item.cpuinfo}</td>
-                  <td>{item.cpu_util}</td>
-                  <td>{item.mem_util}</td>
-                  <td>{item.ntp_delay}</td>
-                  <td>{item.ntp_status}</td>
-                </tr>
-              )
-            )}
-          </tbody>
-        </table>
-      )}
-
-
-         {
-          hotnm.map((responseData)=>(
-
-    <div key={responseData.id} className="mt-5">{responseData.cpu_util}</div>
-
-          ))
-         }
-       
-        
-      </div>
+      <Link className="btn btn-info mx-4 mt-5" to="/">
+        Home
+      </Link>
+      <button className="btn btn-primary">{location.state.id}</button>
+     
+      {item.map((element) => (
+        <>
+          <div key={element.App_ID} className="text-center mt-3 ">
+            <div
+              className="mx-1 "
+              style={{
+                color: "white",
+                backgroundColor: element.colorCode,
+                borderRadius: 100,
+              }}
+            >
+               <button className="mx-3 btn btn-primary">Detail</button> 
+            </div>
+            <p>cpu_util:{element.cpu_util}</p>
+          </div>
+        </>
+      ))}
     </div>
   );
 };
 
-export default AppCard;
+export default Appcard;
