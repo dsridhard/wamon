@@ -11,21 +11,22 @@ const Card = (props) => {
   useEffect(() => {
     const interval = setInterval(() => {
       window.location.reload();
-    }, 300000); // 5 Minutes
+    }, 60000); // 1 Minutes
 
     return () => clearInterval(interval);
   }, []);
   useEffect(() => {
-    fetch(`http://localhost:5000/snap/${props.appId}`)
+    fetch(`http://10.64.29.214/snap/${props.appId}`)
       .then((res) => res.json())
       .then((response) => {
         sethost(response.data);
       });
   }, []);
   return (
-    <div className="d-inline-flex ">
-      {host.map((hostData) => (
-        <>
+    <div className="container ">
+       <div className="row">
+       {host.map((hostData) => (
+        <div className="col">
           <div key={hostData.App_ID} className="text-center mt-3 ">
             <div
               className="mx-1 px-1 "
@@ -35,10 +36,14 @@ const Card = (props) => {
               }}
             >
               <p>{hostData.server_id}</p>
+              
             </div>
+           
           </div>
-        </>
+        </div>
       ))}
+       </div>
+     
       <br></br>
       <button className="btn btn-primary btn-sm" onClick={navHandler}>
         View

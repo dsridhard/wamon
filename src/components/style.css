@@ -2,6 +2,19 @@
   background-image: linear-gradient(to right, #00d084, #32ded4);
   width: 100%;
 }
+
+.gradBlue {
+  background-image: linear-gradient(to right, #56CCF2, #2F80ED);
+  width: 100%;
+}
+.gradMaldives {
+  background-image: linear-gradient(to right, #4AC29A, #0ED2F7);
+  width: 100%;
+}
+
+.gradLove {
+  background-image: linear-gradient(to right, #0052D4,#00c3ff );
+}
 .imglogo {
   height: 30px;
 }

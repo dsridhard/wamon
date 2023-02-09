@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+
 import "./style.css";
 import Header from "./header";
+import User from "./User";
 import CpuLogo from "./images/cpu.gif";
 import MemLogo from "./images/ram.png";
 import Hard from "./images/hard-disk.gif";
@@ -10,37 +12,62 @@ const Appcard = () => {
   const location = useLocation();
   const hostView = location.state.id;
   const [item, setitem] = useState([]);
-  const showDetail = () => {};
+  const [modeldata, setModeldata] = useState({
+    server_id: "",
+    server_ip: "",
+    cpuinfo: "",
+    cpu_util: "",
+    mem_util: "",
+    ntp_delay: "",
+    ntp_status: "",
+    root_vol: "",
+    total_mem: "",
+    up_time: "",
+    ntp_status: "",
+    root_vol: "",
+    total_mem: "",
+    up_time: "",
+  });
+
   const tableHandler = () => {};
   useEffect(() => {
     const interval = setInterval(() => {
       window.location.reload();
-    }, 60000); // 5 Minutes
+    }, 60000); // 1 Minutes
 
     return () => clearInterval(interval);
   }, []);
   useEffect(() => {
-    fetch(`http://localhost:5000/snap/${hostView}`)
+    fetch(`http://10.64.29.214/snap/${hostView}`)
       .then((response) => response.json())
       .then((resData) => {
         setitem(resData.data);
       });
   }, []);
+  const showDetail = (id) => {
+    fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
+      .then((resposne) => resposne.json())
+      .then((res) => setModeldata(res));
+  };
   return (
     <div>
       <Header />
       <div className="container-fluid">
-        <div className="mt-3">
-          <Link className="btn btn-info mx-2 " to="/">
-            Home
-          </Link>
-          <button className="btn btn-primary text-center">
-            {location.state.name}
-          </button>
+        <User />
+        <div className="row">
+          <div className=" col">
+            <Link
+              className="btn gradLove text-white border-light mx-2 "
+              to="/home"
+            >
+              Home
+            </Link>
+            <p className="text-center display-5 ">{location.state.name}</p>
+          </div>
         </div>
         <div className="row justify-content-center">
-          {item.map((element) => (
-            <div key={element.server_id} className="col-sm-1">
+          {item.map((element,index) => (
+            <div key={index} className="col-sm-1">
               <div
                 className="card my-2 shadow-lg "
                 onClick={tableHandler()}
@@ -85,11 +112,11 @@ const Appcard = () => {
         <div className="row justify-content-center">
           <div className="col-sm-6 ">
             <h4 className="text-center">
-              <span className="badge bg-secondary ">Server IP</span>
+              <span className="badge grad">Server Detail</span>
             </h4>
             <div className="table-responsive">
-              <table className="table table-hover  border shadow-lg">
-                <thead className="table-primary">
+              <table className="table table-hover  border shadow-md">
+                <thead className="gradMaldives border-light text-white">
                   <tr>
                     <th scope="col">SID</th>
                     <th scope="col">IP</th>
@@ -117,7 +144,7 @@ const Appcard = () => {
                       <td>{tableData.up_time}</td>
                       <td>
                         <button
-                          class="btn btn-primary"
+                          className="btn gradBlue border-light text-white"
                           onClick={(e) => showDetail(tableData.server_id)}
                           data-toggle="modal"
                           data-target="#myModal"
@@ -129,6 +156,62 @@ const Appcard = () => {
                   ))}
                 </tbody>
               </table>
+            </div>
+            {/*model*/}
+            <div className="modal fade" id="myModal">
+              <div className="modal-dialog modal-dialog-centered  modal-lg" style={{ width: "4200px" }}>
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h4 className="modal-title">Sever_Id : {modeldata.id}</h4>
+                    <button type="button" className="close" data-dismiss="modal">
+                      &times;
+                    </button>
+                  </div>
+
+                  <div className="modal-body">
+                    <table className="table">
+                      <thead className="thead-light">
+                        <tr>
+                          <th>SID </th>
+                          <th>IP</th>
+                          <th>CPUINFO</th>
+                          <th>CPUtil</th>
+                          <th>MemUtil</th>
+                          <th>NTPDelay </th>
+                          <th>NTPStaus</th>
+                          <th>RooTVol</th>
+                          <th>TotalMem</th>
+                          <th>UpTime</th>
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{modeldata.server_id}</td>
+                          <td>{modeldata.server_ip}</td>
+                          <td>{modeldata.cpuinfo}</td>
+                          <td>{modeldata.cpu_util}</td>
+                          <td>{modeldata.mem_util}</td>
+                          <td>{modeldata.ntp_delay}</td>
+                          <td>{modeldata.ntp_status}</td>
+                          <td>{modeldata.root_vol}</td>
+                          <td>{modeldata.total_mem}</td>
+                          <td>{modeldata.up_time}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

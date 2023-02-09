@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Header from "./header";
 import Card from "./card";
-import Wave from "../components/logo.svg";
+import User from "./User";
 const Home = () => {
   const [hotnm, sethotnm] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:5000/apps")
+    fetch("http://10.64.29.214/apps")
       .then((res) => res.json())
       .then((response) => {
         sethotnm(response.data);
@@ -15,6 +15,7 @@ const Home = () => {
     <div>
       <Header />
       <div className="container-fluid">
+       <User/>
         <div className="row mt-5 ">
           {hotnm.map((appData) => (
             <div
@@ -34,7 +35,7 @@ const Home = () => {
             </div>
           ))}
 
-          <img className="fixed-bottom" src={Wave} alt="svgwave" />
+          {/* <img className="fixed-bottom" src={Wave} alt="svgwave" /> */}
         </div>
       </div>
     </div>
