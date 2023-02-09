@@ -5,7 +5,7 @@ import Wave from "../components/logo.svg";
 const Home = () => {
   const [hotnm, sethotnm] = useState([]);
   useEffect(() => {
-    fetch("http://10.64.29.214/apps")
+    fetch("http://localhost:5000/apps")
       .then((res) => res.json())
       .then((response) => {
         sethotnm(response.data);
@@ -24,13 +24,17 @@ const Home = () => {
               <div className="card mt-2 shadow-lg">
                 <div className="card-header">{appData.App_Name}</div>
                 <div className="card-body">
-                  <Card  appPath={appData.App_Path} appId={appData.App_ID} />
+                  <Card
+                    appPath={appData.App_Path}
+                    appId={appData.App_ID}
+                    appName={appData.App_Name}
+                  />
                 </div>
               </div>
             </div>
           ))}
 
-          <img className="fixed-bottom" src={Wave} alt="svgwave"/>
+          <img className="fixed-bottom" src={Wave} alt="svgwave" />
         </div>
       </div>
     </div>
